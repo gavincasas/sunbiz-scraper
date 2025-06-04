@@ -5,6 +5,10 @@ import re
 import io
 import csv
 from playwright.sync_api import sync_playwright
+# Configure Playwright to run without sandbox
+import os
+os.environ["PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD"] = "1"
+os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "/opt/render/.cache/ms-playwright"
 
 # Set page configuration
 st.set_page_config(
@@ -117,7 +121,7 @@ def search_sunbiz(search_type, search_term, max_results, status_text, progress_b
     results = []
     
     with sync_playwright() as p:
-        browser = p.firefox.launch(headless=True)
+        browser = p.firefox.launch(headless=True), args=['--no-sandbox'])
         context = browser.new_context(
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
         )
